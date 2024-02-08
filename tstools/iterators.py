@@ -5,6 +5,10 @@ import numpy as np
 import pandas as pd
 
 
+def split_by_index(df: pd.DataFrame, level):
+    return [group.copy(deep=True) for _, group in df.groupby(level)]
+
+
 class SequenceIterator:
 
     def __init__(self, data: pd.DataFrame, sequence_length: int, stride: int = 1,
@@ -132,7 +136,7 @@ class MultiSequenceIterator:
 
     def __next__(self):
         if self.iter_step <= len(self):
-            self.iter_step = 0
+            self.iter_step += 1
             return self[self.iter_step - 1]
         else:
             raise StopIteration
